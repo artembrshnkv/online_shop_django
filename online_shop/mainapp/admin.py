@@ -19,6 +19,7 @@ class SubcategoryAdmin(admin.ModelAdmin):
 @admin.register(Goods)
 class GoodsAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug', 'price', 'active_offer', 'category_id', 'subcategory_id']
+    list_display_links = ['title', 'slug', 'price']
     prepopulated_fields = {'slug': ('title', )}
 
 

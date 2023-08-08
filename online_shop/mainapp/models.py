@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -37,6 +38,12 @@ class Goods(models.Model):
     price = models.IntegerField(verbose_name='Цена')
     active_offer = models.BooleanField(verbose_name='В продаже', default=True)
 
+
+    def get_absolute_url(self):
+        return reverse('show_product', kwargs={'category': self.category,
+                                               'subcategory': self.subcategory,
+                                               'product_id': self.pk})
+
     def __str__(self):
         return f'{self.title}'
 
@@ -48,6 +55,7 @@ class Goods(models.Model):
 class Comment(models.Model):
     username = models.ForeignKey(verbose_name='Автор', to=User, on_delete=models.PROTECT)
     content = models.TextField(verbose_name='Комментарий')
+    product = models.ForeignKey(verbose_name='Id товара', to=Goods, on_delete=models.PROTECT)
     time_creation = models.TimeField(verbose_name='Дата создания', auto_now_add=True)
     time_update = models.TimeField(verbose_name='Дата изменения', auto_now=True)
 

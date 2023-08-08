@@ -1,13 +1,13 @@
 {% extends 'mainapp/base.html' %}
     {% block content %}
     {% for product in products %}
-
+    
     <div class="card">
         <img class="card-img-top" src="{{ product.photo.url }}" alt="Card image cap">
         <div class="card-body">
             <h4 class="card-title">{{ product.title }}</h4>
             <p class="card-text">{{ product.description }}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Перейти к товару</a>
         </div>
     </div>
 {% endfor %}

@@ -1,0 +1,6 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+{% for sc in subcategory %}
+     <a class="dropdown-item" href="{{ sc.get_absolute_url }}">{{ sc.title }}</a>
+{% endfor %}
+{% endblock content %}

@@ -9,11 +9,30 @@
     <title>Title</title>
 </head>
 <body>
+
+
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <button type="button" class="btn btn-info">Info</button>
-        <p>fdc</p>
-        <p>dbrgf</p>
+        <nav class="nav">
+            {% for m in menu %}
+                {% if m.type == 'link_button' %}
+                    <a class="nav-link active" href="{% url m.url %}">{{ m.name }}</a>
+                {% elif m.type == 'menu_dropdown' %}
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Категории
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            {% for c in categories %}
+                                <a class="dropdown-item" href="{{ c.get_absolute_url }}">{{ c.title }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+            {% endif %}
+
+            {% endfor %}
+        </nav>
     </nav>
+
 {% block content %}
 {% endblock content %}
 </body>

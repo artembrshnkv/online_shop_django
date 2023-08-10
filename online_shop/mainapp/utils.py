@@ -3,8 +3,9 @@ from .models import *
 menu = [
     {'name': 'Главная страница', 'url': 'all_products', 'type': 'link_button'},
     {'name': 'Категории', 'type': 'menu_dropdown'},
-    {'name': 'Регистрация', 'url': 'reg', 'type': 'link_button'},
-    {'name': 'Войти', 'url': 'user_login', 'type': 'link_button'},
+    {'name': 'Регистрация', 'url': 'registration', 'type': 'auth_false'},
+    {'name': 'Войти', 'url': 'user_login', 'type': 'auth_false'},
+    {'name': 'Аккаунт', 'url': 'user_account', 'type': 'auth_true'}
 ]
 
 subcategories = Subcategory.objects.all()

@@ -1,7 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.contrib.auth.views import LoginView
 from django import http
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.db.models import Q
 
 from .models import *
@@ -89,3 +92,17 @@ class UserLogin(BaseMixin, LoginView):
         context = dict(list(super_data.items()) + list(c_def.items()))
         return context
 
+
+class UserAccount(BaseMixin, TemplateView):
+    template_name = 'mainapp/user_account.html'
+
+    def get_context_data(self, **kwargs):
+        super_data = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(**kwargs)
+        context = dict(list(super_data.items()) + list(c_def.items()))
+        return context
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('all_products')

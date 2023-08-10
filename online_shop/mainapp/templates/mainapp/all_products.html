@@ -1,23 +1,24 @@
 {% extends 'mainapp/base.html' %}
     {% block content %}
-    {% for product in products %}
-    
-    <div class="card">
-        <img class="card-img-top" src="{{ product.photo.url }}" alt="Card image cap">
-        <div class="card-body">
-            <h4 class="card-title">{{ product.title }}</h4>
-            <p class="card-text">{{ product.description }}</p>
-            <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Перейти к товару</a>
-        </div>
-    </div>
+<!--    {% for product in products %}-->
+<!--    -->
+<!--    <div class="card">-->
+<!--        <img class="card-img-top" src="{{ product.photo.url }}" alt="Card image cap">-->
+<!--        <div class="card-body">-->
+<!--            <h4 class="card-title">{{ product.title }}</h4>-->
+<!--            <p class="card-text">{{ product.description }}</p>-->
+<!--            <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Перейти к товару</a>-->
+<!--        </div>-->
+<!--    </div>-->
 
-{% endfor %}
+<!--{% endfor %}-->
 {% for product in products %}
 
   <div class="list-group">
   <a href="{{ product.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-between">
-      <img src="{{ product.photo.url }}" alt="Card image cap">
+        <img class="img-thumbnail" src="{{ product.photo.url }}" alt="Thumbnail image">
+<!--        <img src="{{ product.photo.url }}" alt="Card image cap">-->
 
 <!--      <h5 class="mb-1">{{ g.title }}</h5>-->
       <small class="text-muted">Цена: {{ product.price }}</small>

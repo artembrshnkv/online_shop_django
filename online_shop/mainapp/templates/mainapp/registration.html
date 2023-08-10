@@ -1,0 +1,34 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+<form action="/username/" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username"></label>
+        <input type="text" class="form-control" id="username" placeholder="Username">
+
+        <label for="first_name"></label>
+        <input type="text" class="form-control" id="first_name" placeholder="first name">
+
+        <label for="last_name"></label>
+        <input type="text" class="form-control" id="last_name" placeholder="last name">
+
+        <label for="email"></label>
+        <input type="text" class="form-control" id="email" placeholder="email">
+
+        <label for="password1"></label>
+        <input type="text" class="form-control" id="password1" placeholder="password">
+
+        <label for="password2"></label>
+        <input type="text" class="form-control" id="password2" placeholder="repeat password">
+    </div>
+    <button type="submit" class="btn btn-outline-primary">Регистрация</button>
+</form>
+
+<a class="nav-link active" href="{% url 'user_login' %}">Уже есть аккаунт?</a>
+
+
+<!--  <div class="form-group">-->
+<!--    <label for="formGroupExampleInput2">Another label</label>-->
+<!--    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">-->
+<!--  </div>-->
+{% endblock content %}

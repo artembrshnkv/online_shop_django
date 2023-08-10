@@ -2,7 +2,9 @@ from .models import *
 
 menu = [
     {'name': 'Главная страница', 'url': 'all_products', 'type': 'link_button'},
-    {'name': 'Категории', 'type': 'menu_dropdown'}
+    {'name': 'Категории', 'type': 'menu_dropdown'},
+    {'name': 'Регистрация', 'url': 'reg', 'type': 'link_button'},
+    {'name': 'Войти', 'url': 'user_login', 'type': 'link_button'},
 ]
 
 subcategories = Subcategory.objects.all()

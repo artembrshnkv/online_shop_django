@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.views import LoginView
+from django import http
 from django.db.models import Q
 
 from .models import *
 from .utils import *
+from .forms import *
 
 
 class AllProducts(BaseMixin, ListView):
@@ -42,7 +45,10 @@ class SubcategoriesByCategories(BaseMixin, ListView):
 
     def get_queryset(self):
         category = f'{self.request.path}'.split('/')[-1]
-        return Subcategory.objects.filter(category__slug=category)
+        if Category.objects.filter(slug=category).count() != 0:
+            return Subcategory.objects.filter(category__slug=category)
+        else:
+            raise http.Http404
 
 
 class GoodsBySubcategory(BaseMixin, ListView):
@@ -57,4 +63,29 @@ class GoodsBySubcategory(BaseMixin, ListView):
 
     def get_queryset(self):
         subcategory = f'{self.request.path}'.split('/')[-1]
-        return Goods.objects.filter(subcategory__slug=subcategory)
+        if Subcategory.objects.filter(slug=subcategory).count() != 0:
+            return Goods.objects.filter(subcategory__slug=subcategory)
+        else:
+            raise http.Http404
+
+
+class UserRegistration(BaseMixin, CreateView):
+    form_class = UserRegistrationForm
+    template_name = 'mainapp/registration.html'
+
+    def get_context_data(self, **kwargs):
+        super_data = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(**kwargs)
+        context = dict(list(super_data.items()) + list(c_def.items()))
+        return context
+
+
+class UserLogin(BaseMixin, LoginView):
+    template_name = 'mainapp/user_login.html'
+
+    def get_context_data(self, **kwargs):
+        super_data = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(**kwargs)
+        context = dict(list(super_data.items()) + list(c_def.items()))
+        return context
+

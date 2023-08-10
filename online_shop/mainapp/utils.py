@@ -5,7 +5,8 @@ menu = [
     {'name': 'Категории', 'type': 'menu_dropdown'},
     {'name': 'Регистрация', 'url': 'registration', 'type': 'auth_false'},
     {'name': 'Войти', 'url': 'user_login', 'type': 'auth_false'},
-    {'name': 'Аккаунт', 'url': 'user_account', 'type': 'auth_true'}
+    {'name': 'Аккаунт', 'url': 'user_account', 'type': 'auth_true'},
+    {'name': 'Корзина', 'url': 'my_cart', 'type': 'auth_true'}
 ]
 
 subcategories = Subcategory.objects.all()

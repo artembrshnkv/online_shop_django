@@ -52,7 +52,7 @@ class Goods(models.Model):
                                                'pk': self.pk})
 
     def __str__(self):
-        return f'{self.title}'
+        return f'{self.slug}'
 
     class Meta:
         verbose_name = 'Товар'
@@ -69,3 +69,15 @@ class Comment(models.Model):
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.PROTECT)
+    product = models.ForeignKey(to=Goods, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f'{self.user}_{self.product}'
+
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'

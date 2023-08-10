@@ -29,10 +29,21 @@ class ShowProduct(BaseMixin, DetailView):
     context_object_name = 'product'
     queryset = Goods.objects.all()
 
+    def get_data(self):
+        product_id = f'{self.request.path}'.split('/')[-1]
+        user_id = self.request.user.pk
+        data = {
+            'product_id': product_id,
+            'user_id': user_id
+        }
+        return data
+
     def get_context_data(self, **kwargs):
         super_data = super().get_context_data(**kwargs)
         c_def = self.get_user_context(**kwargs)
         context = dict(list(super_data.items()) + list(c_def.items()))
+        context['product_id'] = self.get_data()['product_id']
+        context['user_id'] = self.get_data()['user_id']
         return context
 
 
@@ -101,6 +112,21 @@ class UserAccount(BaseMixin, TemplateView):
         c_def = self.get_user_context(**kwargs)
         context = dict(list(super_data.items()) + list(c_def.items()))
         return context
+
+
+class MyCart(BaseMixin, ListView):
+    template_name = 'mainapp/my_cart.html'
+    context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        super_data = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(**kwargs)
+        context = dict(list(super_data.items()) + list(c_def.items()))
+        return context
+
+    def get_queryset(self):
+        product_slug = f'{Cart.objects.filter(user_id=self.request.user.pk)[0]}'.split('_')[1]
+        return Goods.objects.filter(slug=product_slug)
 
 
 def user_logout(request):

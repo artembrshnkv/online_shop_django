@@ -2,5 +2,6 @@
 {% block content %}
 {% load mainapp_tags %}
 {{ product.title}}
-<button type="submit" onclick="{% insert_into_cart user_id=user_id product_id=product_id %}" class="btn btn-outline-primary">Добавить в корзину</button>
+    <button type="button" onclick="{% insert_into_cart user_id=user_id product_id=product_id %}" class="btn btn-success">Добавить в карзину</button>
+    <button type="button" onclick="{% delete_from_cart user_id=user_id product_id=product_id %}" class="btn btn-danger">Удалить из корзины</button>
 {% endblock content %}

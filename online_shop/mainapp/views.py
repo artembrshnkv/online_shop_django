@@ -125,8 +125,13 @@ class MyCart(BaseMixin, ListView):
         return context
 
     def get_queryset(self):
-        product_slug = f'{Cart.objects.filter(user_id=self.request.user.pk)[0]}'.split('_')[1]
-        return Goods.objects.filter(slug=product_slug)
+        # product_slug = f'{Cart.objects.filter(user_id=self.request.user.pk)[0]}'.split('_')[1]
+        # return Goods.objects.filter(slug=product_slug)
+        try:
+            product_slug = f'{Cart.objects.filter(user_id=self.request.user.pk)[0]}'.split('_')[1]
+            return Goods.objects.filter(slug=product_slug)
+        except IndexError:
+            pass
 
 
 def user_logout(request):

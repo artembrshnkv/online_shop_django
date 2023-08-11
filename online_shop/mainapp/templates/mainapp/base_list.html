@@ -1,0 +1,15 @@
+{% extends 'mainapp/base.html' %}
+{% block dropdown_sort %}
+<div class="dropdown open">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Сортировка
+    </button>
+    <div class="dropdown-menu">
+        <h6 class="dropdown-header">Выберите способ сортировки</h6>
+        {% for m in sort_menu %}
+        <a class="dropdown-item" href="{{ m.url }}">{{ m.title }}</a>
+<!--        <a class="dropdown-item" href="#">Another action</a>-->
+        {% endfor %}
+    </div>
+</div>
+{% endblock dropdown_sort %}

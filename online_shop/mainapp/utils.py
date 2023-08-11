@@ -9,15 +9,27 @@ menu = [
     {'name': 'Корзина', 'url': 'my_cart', 'type': 'auth_true'}
 ]
 
+sort_menu = [
+    {'title': 'По вазрастани цены', 'url': '?min_price=True'},
+    {'title': 'По убыванию цены ', 'url': '?max_price=True'},
+
+]
+
+comments_sort_menu = [
+    {'title': 'Сначало хорошие', 'url': '?good_at_first=True'},
+    {'title': 'Сначало плохие', 'url': '?bad_at_first=True'}
+]
+
 subcategories = Subcategory.objects.all()
 categories = Category.objects.all()
 
 
 class BaseMixin:
-
     def get_user_context(self, **kwargs):
         context = kwargs
         context['menu'] = menu
         context['categories'] = categories
         context['subcategories'] = subcategories
+        context['sort_menu'] = sort_menu
         return context
+

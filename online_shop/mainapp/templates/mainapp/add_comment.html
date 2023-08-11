@@ -1,0 +1,8 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-outline-primary">Добавить коментарий</button>
+</form>
+{% endblock content %}

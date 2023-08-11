@@ -60,11 +60,26 @@ class Goods(models.Model):
 
 
 class Comment(models.Model):
+    stars = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4),
+        (5, 5)
+    )
+
     username = models.ForeignKey(verbose_name='Автор', to=User, on_delete=models.PROTECT)
     content = models.TextField(verbose_name='Комментарий')
     product = models.ForeignKey(verbose_name='Id товара', to=Goods, on_delete=models.PROTECT)
+    rating = models.IntegerField(verbose_name='Оценка', choices=stars, default=5)
     time_creation = models.TimeField(verbose_name='Дата создания', auto_now_add=True)
     time_update = models.TimeField(verbose_name='Дата изменения', auto_now=True)
+
+
+    def get_absolute_url(self):
+        return reverse('add_comment', kwargs={'pk': self.pk,
+                                              'category': Goods.objects.get(pk=self.product.category)[0],
+                                              'subcategory': Goods.objects.get(pk=self.product.subcategory)[0]})
 
     class Meta:
         verbose_name = 'Комментарий'

@@ -8,4 +8,37 @@
 {% else %}
     <button type="button" onclick="{% insert_into_cart user_id=user_id product_id=product_id %}" class="btn btn-success">Добавить в карзину</button>
 {% endif %}
+
+{% has_comments product_id=product_id as comments_exists %}
+{% if comments_exists %}
+
+<div class="dropdown open">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Сортировка
+    </button>
+    <div class="dropdown-menu">
+        <h6 class="dropdown-header">Выберите способ сортировки</h6>
+        {% for m in comments_sort_menu %}
+        <a class="dropdown-item" href="{{ m.url }}">{{ m.title }}</a>
+<!--        <a class="dropdown-item" href="#">Another action</a>-->
+        {% endfor %}
+    </div>
+</div>
+
+{% for comment in comments %}
+<div class="list-group">
+    <!--  <a href="{{ comment.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start">-->
+    <div class="d-flex w-100 justify-content-between">
+        <!--        <img class="img-thumbnail" src="{{ product.photo.url }}" alt="Thumbnail image">-->
+        <!--        <img src="{{ product.photo.url }}" alt="Card image cap">-->
+        <!--      <h5 class="mb-1">{{ g.title }}</h5>-->
+        <small class="text-muted">Автор: {{ comment.username_id }}</small>
+    </div>
+    <p class="mb-1">Оценка: {{ comment.rating }}</p>
+    <small class="text-muted">{{ comment.content }}</small>
+    </a>
+</div>
+{% endfor %}
+{% endif %}
+<a class="nav-link active" href="{% url 'add_comment' category=category subcategory=subcategory pk=product_id%}">Оставить комментарий</a>
 {% endblock content %}

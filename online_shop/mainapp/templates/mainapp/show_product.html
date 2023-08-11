@@ -2,6 +2,10 @@
 {% block content %}
 {% load mainapp_tags %}
 {{ product.title}}
-    <button type="button" onclick="{% insert_into_cart user_id=user_id product_id=product_id %}" class="btn btn-success">Добавить в карзину</button>
+{% already_in_cart product_id=product_id user_id=user_id as exists %}
+{% if exists %}
     <button type="button" onclick="{% delete_from_cart user_id=user_id product_id=product_id %}" class="btn btn-danger">Удалить из корзины</button>
+{% else %}
+    <button type="button" onclick="{% insert_into_cart user_id=user_id product_id=product_id %}" class="btn btn-success">Добавить в карзину</button>
+{% endif %}
 {% endblock content %}

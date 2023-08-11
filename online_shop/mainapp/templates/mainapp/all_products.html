@@ -13,13 +13,11 @@
 
 <!--{% endfor %}-->
 {% for product in products %}
-
   <div class="list-group">
   <a href="{{ product.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-between">
         <img class="img-thumbnail" src="{{ product.photo.url }}" alt="Thumbnail image">
 <!--        <img src="{{ product.photo.url }}" alt="Card image cap">-->
-
 <!--      <h5 class="mb-1">{{ g.title }}</h5>-->
       <small class="text-muted">Цена: {{ product.price }}</small>
     </div>
@@ -27,6 +25,5 @@
     <small class="text-muted">{{ product.description }}</small>
   </a>
 </div>
-
 {% endfor %}
 {% endblock content %}

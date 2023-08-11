@@ -125,11 +125,9 @@ class MyCart(BaseMixin, ListView):
         return context
 
     def get_queryset(self):
-        # product_slug = f'{Cart.objects.filter(user_id=self.request.user.pk)[0]}'.split('_')[1]
-        # return Goods.objects.filter(slug=product_slug)
         try:
-            product_slug = f'{Cart.objects.filter(user_id=self.request.user.pk)[0]}'.split('_')[1]
-            return Goods.objects.filter(slug=product_slug)
+            products_slugs = [str(n).split('_')[1] for n in Cart.objects.filter(user_id=self.request.user.pk)]
+            return Goods.objects.filter(slug__in=products_slugs)
         except IndexError:
             pass
 

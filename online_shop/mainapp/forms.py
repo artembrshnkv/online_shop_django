@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from captcha.fields import CaptchaField
 
 from .models import Comment
 
@@ -12,6 +13,7 @@ class UserRegistrationForm(UserCreationForm):
     # password2 = forms.CharField(min_length=8)
     # first_name = forms.CharField(max_length=255)
     # last_name = forms.CharField(max_length=255)
+    captcha = CaptchaField()
 
 
     class Meta:

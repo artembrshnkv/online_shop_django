@@ -113,6 +113,7 @@ class GoodsBySubcategory(BaseMixin, ListView):
 class UserRegistration(BaseMixin, CreateView):
     form_class = UserRegistrationForm
     template_name = 'mainapp/registration.html'
+    success_url = reverse_lazy('user_login')
 
     def get_context_data(self, **kwargs):
         super_data = super().get_context_data(**kwargs)

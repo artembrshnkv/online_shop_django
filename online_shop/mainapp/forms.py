@@ -23,11 +23,12 @@ class UserRegistrationForm(UserCreationForm):
 
 class AddCommentForm(forms.ModelForm):
     # content = forms.CharField()
-    # rating = forms
-    # ChoiceField(choices=Comment.stars)
+    # rating = forms.IntegerField()
     # product = forms.IntegerField()
     # username = forms.IntegerField()
 
     class Meta:
         model = Comment
-        fields = ['content', 'rating', 'product', 'username']
+        # fields = ['content', 'rating', 'product', 'username']
+        fields = '__all__'
+

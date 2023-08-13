@@ -160,6 +160,7 @@ class MyCart(BaseMixin, ListView):
             pass
 
 
+
 class AddComment(BaseMixin, CreateView):
     form_class = AddCommentForm
     template_name = 'mainapp/add_comment.html'
@@ -187,11 +188,14 @@ class AddComment(BaseMixin, CreateView):
         # context['user_id'] = self.get_data()['user_id']
         return context
 
-    def get_form_kwargs(self):
-        kwargs = {'initial': super().get_initial()}
-        kwargs['initial']['username'] = self.get_data()['user_id']
-        kwargs['initial']['product'] = self.get_data()['product_id']
-        return kwargs
+    # def get_form_kwargs(self):
+    #     # kwargs = super(AddComment, self).get_form_kwargs()
+    #     # kwargs['username'] = self.get_data()['user_id']
+    #     # kwargs['product_id'] = self.get_data()['user_id']
+    #     kwargs = {'initial': super().get_initial()}
+    #     kwargs['initial']['username'] = self.get_data()['user_id']
+    #     kwargs['initial']['product'] = self.get_data()['product_id']
+    #     return kwargs
 
 
 def user_logout(request):

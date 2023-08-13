@@ -25,20 +25,27 @@
     </div>
 </div>
 
+<hr>
 {% for comment in comments %}
+
 <div class="list-group">
-    <!--  <a href="{{ comment.get_absolute_url }}" class="list-group-item list-group-item-action flex-column align-items-start">-->
     <div class="d-flex w-100 justify-content-between">
         <!--        <img class="img-thumbnail" src="{{ product.photo.url }}" alt="Thumbnail image">-->
         <!--        <img src="{{ product.photo.url }}" alt="Card image cap">-->
-        <!--      <h5 class="mb-1">{{ g.title }}</h5>-->
-        <small class="text-muted">Автор: {{ comment.username_id }}</small>
+              <h5 class="mb-1">{{ comment.content }}</h5>
+            <small class="text-muted">{{ comment.time_update }}</small>
     </div>
     <p class="mb-1">Оценка: {{ comment.rating }}</p>
-    <small class="text-muted">{{ comment.content }}</small>
+    <small class="text-muted">Автор: {% get_username_by_id user_id=comment.username_id %}</small>
     </a>
 </div>
+<hr>
 {% endfor %}
-{% endif %}
+{% comment_exists user_id=comment.username_id product_id=comment.product_id as cm_exists %}
+{% if cm_exists %}
+<a class="nav-link active" href="{% url 'add_comment' category=category subcategory=subcategory pk=product_id%}">Редактировать комментарий</a>
+{% else %}
 <a class="nav-link active" href="{% url 'add_comment' category=category subcategory=subcategory pk=product_id%}">Оставить комментарий</a>
+{% endif %}
+{% endif %}
 {% endblock content %}

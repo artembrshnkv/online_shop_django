@@ -41,9 +41,9 @@
 </div>
 <hr>
 {% endfor %}
-{% comment_exists user_id=comment.username_id product_id=comment.product_id as cm_exists %}
+{% comment_exists user_id=user_id product_id=product_id as cm_exists %}
 {% if cm_exists %}
-<a class="nav-link active" href="{% url 'add_comment' category=category subcategory=subcategory pk=product_id%}">Редактировать комментарий</a>
+<a class="nav-link active" href="{% url 'update_comment' category=category subcategory=subcategory pk=product_id%}">Редактировать комментарий</a>
 {% else %}
 <a class="nav-link active" href="{% url 'add_comment' category=category subcategory=subcategory pk=product_id%}">Оставить комментарий</a>
 {% endif %}

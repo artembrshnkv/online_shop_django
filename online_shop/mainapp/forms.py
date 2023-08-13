@@ -22,6 +22,11 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class AddCommentForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        self.username = kwargs.pop('username', None)
+        self.product_id = kwargs.pop('product_id', None)
+        super(AddCommentForm, self).__init__(*args, **kwargs)
     # content = forms.CharField()
     # rating = forms.IntegerField()
     # product = forms.IntegerField()

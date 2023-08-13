@@ -1,0 +1,7 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ from.as_p }}
+</form>
+{% endblock content %}

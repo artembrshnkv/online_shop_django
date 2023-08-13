@@ -5,6 +5,7 @@ urlpatterns = [
     path('', AllProducts.as_view(), name='all_products'),
     path('<slug:category>/<slug:subcategory>/<int:pk>', ShowProduct.as_view(), name='show_product'),
     path('<slug:category>/<slug:subcategory>/<int:pk>/add_comment', AddComment.as_view(), name='add_comment'),
+    path('<slug:category>/<slug:subcategory>/<int:pk>/update_comment', CommentUpdate.as_view(), name='update_comment'),
     path('registration', UserRegistration.as_view(), name='registration'),
     path('login', UserLogin.as_view(), name='user_login'),
     path('account', UserAccount.as_view(), name='user_account'),

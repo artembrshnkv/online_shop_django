@@ -75,6 +75,8 @@ class Comment(models.Model):
     time_creation = models.TimeField(verbose_name='Дата создания', auto_now_add=True)
     time_update = models.TimeField(verbose_name='Дата изменения', auto_now=True)
 
+    def __str__(self):
+        return f'{self.username}_{self.product}'
 
     def get_absolute_url(self):
         return reverse('add_comment', kwargs={'pk': self.pk,

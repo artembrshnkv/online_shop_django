@@ -40,4 +40,4 @@ def comment_is_edited(user_id, product_id):
 
 @register.simple_tag()
 def comment_exists(user_id, product_id):
-    return True if Comment.objects.get(username_id=user_id, product_id=product_id).count() != 0 else False
+    return True if Comment.objects.filter(username_id=user_id, product_id=product_id).count() != 0 else False

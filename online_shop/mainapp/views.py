@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
 from django.contrib.auth.views import LoginView
 from django import http
 from django.contrib.auth import logout
@@ -188,14 +188,45 @@ class AddComment(BaseMixin, CreateView):
         # context['user_id'] = self.get_data()['user_id']
         return context
 
-    # def get_form_kwargs(self):
-    #     # kwargs = super(AddComment, self).get_form_kwargs()
-    #     # kwargs['username'] = self.get_data()['user_id']
-    #     # kwargs['product_id'] = self.get_data()['user_id']
-    #     kwargs = {'initial': super().get_initial()}
-    #     kwargs['initial']['username'] = self.get_data()['user_id']
-    #     kwargs['initial']['product'] = self.get_data()['product_id']
-    #     return kwargs
+    def get_form_kwargs(self):
+        kwargs = super(AddComment, self).get_form_kwargs()
+        kwargs['username'] = self.get_data()['user_id']
+        kwargs['product_id'] = self.get_data()['product_id']
+        return kwargs
+        # # kwargs = super(AddComment, self).get_form_kwargs()
+        # # kwargs['username'] = self.get_data()['user_id']
+        # # kwargs['product_id'] = self.get_data()['user_id']
+        # kwargs = {'initial': super().get_initial()}
+        # kwargs['initial']['username'] = self.get_data()['user_id']
+        # kwargs['initial']['product'] = self.get_data()['product_id']
+        # return kwargs
+
+
+class CommentUpdate(BaseMixin, UpdateView):
+    template_name = 'mainapp/comment_update.html'
+    form_class = AddCommentForm
+    success_url = reverse_lazy('all_products')
+
+    def get_data(self):
+        product_id = f'{self.request.path}'.split('/')[-2]
+        user_id = self.request.user.pk
+        data = {
+            'product_id': product_id,
+            'user_id': user_id
+        }
+        return data
+
+    def get_context_data(self, **kwargs):
+        super_data = super().get_context_data(**kwargs).items()
+        c_def = self.get_user_context(**kwargs).items()
+        context = dict(list(super_data) + list(c_def))
+        return context
+
+    def get_queryset(self):
+        print(Comment.objects.filter(username_id=self.get_data()['user_id'],
+                                     product_id=self.get_data()['product_id']))
+        return Comment.objects.filter(username_id=self.get_data()['user_id'],
+                                      product_id=self.get_data()['product_id'])
 
 
 def user_logout(request):

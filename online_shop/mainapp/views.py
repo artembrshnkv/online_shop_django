@@ -189,17 +189,22 @@ class AddComment(BaseMixin, CreateView):
         return context
 
     def get_form_kwargs(self):
-        kwargs = super(AddComment, self).get_form_kwargs()
-        kwargs['username'] = self.get_data()['user_id']
-        kwargs['product_id'] = self.get_data()['product_id']
-        return kwargs
+        # kwargs = super(AddComment, self).get_form_kwargs()
+        # kwargs.update({
+        #     'username': self.get_data()['user_id'],
+        #     'product_id' : self.get_data()['product_id']
+        # })
+        # kwargs['username'] = self.get_data()['user_id']
+        # kwargs['product_id'] = self.get_data()['product_id']
+        # return kwargs
         # # kwargs = super(AddComment, self).get_form_kwargs()
         # # kwargs['username'] = self.get_data()['user_id']
         # # kwargs['product_id'] = self.get_data()['user_id']
-        # kwargs = {'initial': super().get_initial()}
-        # kwargs['initial']['username'] = self.get_data()['user_id']
-        # kwargs['initial']['product'] = self.get_data()['product_id']
-        # return kwargs
+        kwargs = {'initial': super(AddComment, self).get_initial()}
+        kwargs['initial']['username'] = self.get_data()['user_id']
+        kwargs['initial']['product'] = self.get_data()['product_id']
+        return kwargs
+
 
 
 class CommentUpdate(BaseMixin, UpdateView):
@@ -222,11 +227,9 @@ class CommentUpdate(BaseMixin, UpdateView):
         context = dict(list(super_data) + list(c_def))
         return context
 
-    def get_queryset(self):
-        print(Comment.objects.filter(username_id=self.get_data()['user_id'],
-                                     product_id=self.get_data()['product_id']))
-        return Comment.objects.filter(username_id=self.get_data()['user_id'],
-                                      product_id=self.get_data()['product_id'])
+    # def get_queryset(self):
+    #     return Comment.objects.filter(username_id=self.get_data()['user_id'],
+    #                                   product_id=self.get_data()['product_id'])
 
 
 def user_logout(request):

@@ -1,5 +1,6 @@
 from django import template
 from django.contrib.auth.models import User
+from django.db.models import Avg
 
 from mainapp.models import Cart, Comment
 
@@ -41,3 +42,13 @@ def comment_is_edited(user_id, product_id):
 @register.simple_tag()
 def comment_exists(user_id, product_id):
     return True if Comment.objects.filter(username_id=user_id, product_id=product_id).count() != 0 else False
+
+
+@register.simple_tag()
+def get_avg_rating(product_id):
+    return Comment.objects.filter(product_id=product_id).aggregate(Avg('rating'))['rating__avg']
+
+
+@register.simple_tag()
+def total_comments(product_id):
+    return Comment.objects.filter(product_id=product_id).count()

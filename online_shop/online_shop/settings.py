@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'mainapp.apps.MainappConfig',
     'bootstrap4',
     'captcha',
+    'social_django',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -50,7 +52,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend'
+)
 
 ROOT_URLCONF = 'online_shop.urls'
 
@@ -65,12 +73,18 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect'
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'online_shop.wsgi.application'
+
+INTERNAL_IPS = [
+    '127.0.0.1'
+]
 
 
 # Database
@@ -118,6 +132,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = ' '
+SOCIAL_AUTH_VK_OAUTH2_SECRET = ''
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

@@ -20,7 +20,7 @@ comments_sort_menu = [
     {'title': 'Сначало плохие', 'url': '?bad_at_first=True'}
 ]
 
-subcategories = Subcategory.objects.all()
+subcategories = Subcategory.objects.all().select_related('category')
 categories = Category.objects.all()
 
 

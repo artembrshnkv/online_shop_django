@@ -24,23 +24,19 @@ class UserRegistrationForm(UserCreationForm):
 class AddCommentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
+        # self.username = kwargs.pop('username', None)
+        # self.product = kwargs.pop('product_id', None)
+        # super(AddCommentForm, self).__init__(*args, **kwargs)
         self.username = kwargs.pop('user_id', None)
         self.product_id = kwargs.pop('product_id', None)
-        super(AddCommentForm, self).__init__(*args, **kwargs)
-    # content = forms.CharField()
-    # rating = forms.IntegerField()
-    # product = forms.IntegerField()
-    # username = forms.IntegerField()
-
-    # def save(self, commit=True):
-    #     comment = super(AddCommentForm, self).save(commit=True)
-    #     if commit:
-    #         comment.save()
-    #     return comment
-
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = Comment
         # fields = ['content', 'rating']
         fields = '__all__'
+        widgets = {
+            'product': forms.HiddenInput(),
+            'username': forms.HiddenInput()
+        }
 

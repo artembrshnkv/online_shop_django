@@ -26,17 +26,17 @@ class AllProducts(BaseMixin, ListView):
 
     def get_queryset(self):
         if self.request.GET.get('min_price'):
-            return Goods.objects.all().order_by('price')
+            return Goods.objects.all().order_by('price').prefect_releted('category')
         elif self.request.GET.get('max_price'):
-            return Goods.objects.all().order_by('-price')
+            return Goods.objects.all().order_by('-price').prefetch_related('category')
         else:
-            return Goods.objects.all()
+            return Goods.objects.all().select_related('category')
 
 
 class ShowProduct(BaseMixin, DetailView):
     template_name = 'mainapp/show_product.html'
     context_object_name = 'product'
-    queryset = Goods.objects.all()
+    queryset = Goods.objects.all().select_related('category')
 
     def get_data(self):
         product_id = f'{self.request.path}'.split('/')[-1]
@@ -48,7 +48,7 @@ class ShowProduct(BaseMixin, DetailView):
         elif self.request.GET.get('good_at_first'):
             comments = Comment.objects.filter(product_id=product_id).order_by('-rating')
         else:
-            comments = Comment.objects.filter(product_id=product_id)
+            comments = Comment.objects.filter(product_id=product_id).select_related('username')
 
         avg_rating = comments.aggregate(Avg('rating'))
         data = {
@@ -67,10 +67,6 @@ class ShowProduct(BaseMixin, DetailView):
         self_data = self.get_data()
         context = dict(list(super_data.items()) + list(c_def.items()) + list(self_data.items()))
         context['comments_sort_menu'] = comments_sort_menu
-        # context['product_id'] = self.get_data()['product_id']
-        # context['user_id'] = self.get_data()['user_id']
-        # context['comments'] = self.get_data()['comments']
-        # context['avg_rating'] = self.get_data()['avg_rating']
         return context
 
 
@@ -87,7 +83,7 @@ class SubcategoriesByCategories(BaseMixin, ListView):
     def get_queryset(self):
         category = f'{self.request.path}'.split('/')[-1]
         if Category.objects.filter(slug=category).count() != 0:
-            return Subcategory.objects.filter(category__slug=category)
+            return Subcategory.objects.filter(category__slug=category).select_related('category')
         else:
             raise http.Http404
 
@@ -160,7 +156,6 @@ class MyCart(BaseMixin, ListView):
             pass
 
 
-
 class AddComment(BaseMixin, CreateView):
     form_class = AddCommentForm
     template_name = 'mainapp/add_comment.html'
@@ -184,23 +179,10 @@ class AddComment(BaseMixin, CreateView):
         c_def = self.get_user_context(**kwargs)
         self_data = self.get_data()
         context = dict(list(super_data.items()) + list(c_def.items()) + list(self_data.items()))
-        # context['product_id'] = self.get_data()['product_id']
-        # context['user_id'] = self.get_data()['user_id']
         return context
 
     def get_form_kwargs(self):
-        # kwargs = super(AddComment, self).get_form_kwargs()
-        # kwargs.update({
-        #     'username': self.get_data()['user_id'],
-        #     'product_id' : self.get_data()['product_id']
-        # })
-        # kwargs['username'] = self.get_data()['user_id']
-        # kwargs['product_id'] = self.get_data()['product_id']
-        # return kwargs
-        # # kwargs = super(AddComment, self).get_form_kwargs()
-        # # kwargs['username'] = self.get_data()['user_id']
-        # # kwargs['product_id'] = self.get_data()['user_id']
-        kwargs = {'initial': super(AddComment, self).get_initial()}
+        kwargs = super().get_form_kwargs()
         kwargs['initial']['username'] = self.get_data()['user_id']
         kwargs['initial']['product'] = self.get_data()['product_id']
         return kwargs
@@ -211,6 +193,7 @@ class CommentUpdate(BaseMixin, UpdateView):
     template_name = 'mainapp/comment_update.html'
     form_class = AddCommentForm
     success_url = reverse_lazy('all_products')
+    model = Comment
 
     def get_data(self):
         product_id = f'{self.request.path}'.split('/')[-2]

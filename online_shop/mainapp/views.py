@@ -1,13 +1,12 @@
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
 from django.contrib.auth.views import LoginView
 from django import http
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.db.models import Q, Min, Avg
+from django.db.models import Avg
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import *
 from .utils import *
 from .forms import *
 
@@ -16,6 +15,7 @@ class AllProducts(BaseMixin, ListView):
     template_name = 'mainapp/all_products.html'
     queryset = Goods.objects.all()
     context_object_name = 'products'
+    paginate_by = 1
 
 
     def get_context_data(self, **kwargs):
@@ -128,7 +128,7 @@ class UserLogin(BaseMixin, LoginView):
         return context
 
 
-class UserAccount(BaseMixin, TemplateView):
+class UserAccount(LoginRequiredMixin, BaseMixin, TemplateView):
     template_name = 'mainapp/user_account.html'
 
     def get_context_data(self, **kwargs):
@@ -138,7 +138,7 @@ class UserAccount(BaseMixin, TemplateView):
         return context
 
 
-class MyCart(BaseMixin, ListView):
+class MyCart(LoginRequiredMixin, BaseMixin, ListView):
     template_name = 'mainapp/my_cart.html'
     context_object_name = 'products'
 
@@ -156,7 +156,7 @@ class MyCart(BaseMixin, ListView):
             pass
 
 
-class AddComment(BaseMixin, CreateView):
+class AddComment(LoginRequiredMixin, BaseMixin, CreateView):
     form_class = AddCommentForm
     template_name = 'mainapp/add_comment.html'
     success_url = reverse_lazy('all_products')
@@ -187,20 +187,28 @@ class AddComment(BaseMixin, CreateView):
         kwargs['initial']['product'] = self.get_data()['product_id']
         return kwargs
 
+    def get_success_url(self):
+        return reverse('show_product', kwargs={'category': self.get_data()['category'],
+                                               'subcategory': self.get_data()['subcategory'],
+                                               'pk': self.get_data()['product_id']})
 
 
-class CommentUpdate(BaseMixin, UpdateView):
+class CommentUpdate(LoginRequiredMixin, BaseMixin, UpdateView):
     template_name = 'mainapp/comment_update.html'
     form_class = AddCommentForm
     success_url = reverse_lazy('all_products')
-    model = Comment
+    # model = Comment
 
     def get_data(self):
         product_id = f'{self.request.path}'.split('/')[-2]
         user_id = self.request.user.pk
+        category = Goods.objects.get(id=product_id).category
+        subcategory = Goods.objects.get(id=product_id).subcategory
         data = {
             'product_id': product_id,
-            'user_id': user_id
+            'user_id': user_id,
+            'category': category,
+            'subcategory': subcategory
         }
         return data
 
@@ -210,9 +218,16 @@ class CommentUpdate(BaseMixin, UpdateView):
         context = dict(list(super_data) + list(c_def))
         return context
 
-    # def get_queryset(self):
-    #     return Comment.objects.filter(username_id=self.get_data()['user_id'],
-    #                                   product_id=self.get_data()['product_id'])
+    def get_success_url(self):
+        return reverse('show_product', kwargs={'category': self.get_data()['category'],
+                                               'subcategory': self.get_data()['subcategory'],
+                                               'pk': self.get_data()['product_id']})
+
+    def get_queryset(self):
+        print(Comment.objects.filter(username_id=self.get_data()['user_id'],
+                                     product_id=self.get_data()['product_id']))
+        return Comment.objects.filter(username_id=self.get_data()['user_id'],
+                                      product_id=self.get_data()['product_id'])
 
 
 def user_logout(request):

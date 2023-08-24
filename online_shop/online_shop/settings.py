@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'captcha',
     'social_django',
-    'debug_toolbar'
+    'debug_toolbar',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

@@ -1,3 +1,5 @@
+from rest_framework import pagination
+
 from .models import *
 
 menu = [
@@ -32,4 +34,10 @@ class BaseMixin:
         context['subcategories'] = subcategories
         context['sort_menu'] = sort_menu
         return context
+
+
+class ProductsPagination(pagination.PageNumberPagination):
+    page_size = 5
+    max_page_size = 1000
+    page_size_query_param = 'page_size'
 
